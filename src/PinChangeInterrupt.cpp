@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include "PinChangeInterrupt/test.cpp"
 #include "PinChangeInterrupt.h"
 
 // manually include cpp files here to save flash if only 1 ISR is present

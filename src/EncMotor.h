@@ -10,7 +10,7 @@
 #pragma once
 
 #include "PinChangeInterrupt.h"
-#include "EncMotorConst.h"
+//#include "EncMotorConst.h"
 
 class enc_motor {
   public:
@@ -58,14 +58,14 @@ class enc_motor {
       enc_motor::reverse_enc_flag = !enc_motor::reverse_enc_flag; 
     }
     // motor
-    void run(long int speed) {
+    void run(long int speed) {/*
       speed = map(constrain(speed, -MAX_MOTOR_MANAGEMENT_VALUE, MAX_MOTOR_MANAGEMENT_VALUE),
                   -MAX_MOTOR_MANAGEMENT_VALUE,
                   MAX_MOTOR_MANAGEMENT_VALUE,
                   -MAX_MOTOR_REAL_VALUE,MAX_MOTOR_REAL_VALUE
               )*enc_motor::reverse_motor_flag;
       analogWrite(enc_motor::pwm_pin, abs(speed));
-      digitalWrite(enc_motor::dir_pin, speed>0);
+      digitalWrite(enc_motor::dir_pin, speed>0);*/
     }
     // enc motor
     void enc_run_speed(double speed) {
@@ -85,7 +85,7 @@ class enc_motor {
     bool end_run_distanse() {
       return enc_motor::end_distanse;
     }
-    void enc_run_update(long int e_between_motor=0) {
+    void enc_run_update(long int e_between_motor=0) {/*
       long int dt = millis()-enc_motor::enc_motor_time;
       if (dt>MOTOR_ENC_DT) {
         if (enc_motor::motor_speed_distance_mode) {
@@ -143,7 +143,7 @@ class enc_motor {
         }
         // time update
         enc_motor::enc_motor_time = millis();
-      }
+      }*/
     }
     
   private:
