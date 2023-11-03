@@ -5,14 +5,16 @@
    author: Egor Bakay <egor_bakay@inbox.ru> Ni3nayka
    write:  october 2023
    modify: november 2023
+
+   link:
+   https://github.com/NicoHood/PinChangeInterrupt
+   https://habr.com/ru/articles/527044/
+   http://cppstudio.com/post/6964/
 */
 
 #pragma once
 
 #include "PinChangeInterrupt.h"
-
-// https://habr.com/ru/articles/527044/
-// http://cppstudio.com/post/6964/
 
 #define ENC_NONE -1
 #define MAX_QUANTITY_ENC 8
@@ -22,22 +24,26 @@
   ENC_SETUP_INTERRUPT(pin_a,fun_1); if (pin_b!=ENC_NONE) ENC_SETUP_INTERRUPT(pin_b,fun_2); }
 
 int enc_counter__NOT_USING = 0;
-bool enc_dat__NOT_USING[MAX_QUANTITY_ENC][5] = {0}; // [enc_number] [a_new,a_last,b_new,b_last,reverse_enc]
+bool enc_dat__NOT_USING[MAX_QUANTITY_ENC][6] = {0}; // [enc_number] [a_new,a_last,b_new,b_last,reverse_enc,one_pin_enc_flag]
 long int enc_count__NOT_USING[MAX_QUANTITY_ENC] = {0};
 
 class Encoder {
   public:
-    void setup(int pin_a, int pin_b=ENC_NONE) {
+    Encoder() {
       Encoder::enc_number = enc_counter__NOT_USING;
       enc_counter__NOT_USING++;
+    }
+    
+    void setup(int pin_a, int pin_b=ENC_NONE) {
       pinMode(pin_a,INPUT);
       if (pin_b!=ENC_NONE) 
         pinMode(pin_b,INPUT);
       enc_dat__NOT_USING[Encoder::enc_number][0] = digitalRead(pin_a);
-      enc_dat__NOT_USING[Encoder::enc_number][2] = digitalRead(pin_b);
+      enc_dat__NOT_USING[Encoder::enc_number][2] = pin_b!=ENC_NONE?digitalRead(pin_b):0;
       enc_dat__NOT_USING[Encoder::enc_number][1] = enc_dat__NOT_USING[Encoder::enc_number][0];
       enc_dat__NOT_USING[Encoder::enc_number][3] = enc_dat__NOT_USING[Encoder::enc_number][2];
       enc_dat__NOT_USING[Encoder::enc_number][4] = 0;
+      enc_dat__NOT_USING[Encoder::enc_number][5] = (pin_b==ENC_NONE);
       enc_count__NOT_USING[Encoder::enc_number] = 0;
       ENC_SETUP_IF_FOR_INTERRUPT(0,pin_a,pin_b,Encoder::interrupt_enc_1,Encoder::interrupt_enc_2);
       ENC_SETUP_IF_FOR_INTERRUPT(1,pin_a,pin_b,Encoder::interrupt_enc_3,Encoder::interrupt_enc_4);
@@ -78,7 +84,7 @@ class Encoder {
       int enc_number = (interrupt_number-1)/2;
       enc_dat__NOT_USING[enc_number][0] = enc_dat__NOT_USING[enc_number][0]!=(interrupt_number%2);
       enc_dat__NOT_USING[enc_number][2] = enc_dat__NOT_USING[enc_number][2]==(interrupt_number%2);
-      enc_count__NOT_USING[enc_number] += int((enc_dat__NOT_USING[enc_number][0]!=enc_dat__NOT_USING[enc_number][3])!=enc_dat__NOT_USING[enc_number][4])*2-1;
+      enc_count__NOT_USING[enc_number] += int(((enc_dat__NOT_USING[enc_number][0]!=enc_dat__NOT_USING[enc_number][3])||enc_dat__NOT_USING[enc_number][5])!=enc_dat__NOT_USING[enc_number][4])*2-1;
       enc_dat__NOT_USING[enc_number][1] = enc_dat__NOT_USING[enc_number][0];
       enc_dat__NOT_USING[enc_number][3] = enc_dat__NOT_USING[enc_number][2];
     }
