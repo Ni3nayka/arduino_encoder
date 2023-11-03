@@ -1,9 +1,9 @@
 /*
    code write for project:
-   https://github.com/Ni3nayka/Encoders
+   https://github.com/Ni3nayka/arduino_encoder
 
    author: Egor Bakay <egor_bakay@inbox.ru> Ni3nayka
-   write:  February 2022
+   write:  october 2023
    modify: november 2023
 */
 
@@ -18,7 +18,8 @@
 #define MAX_QUANTITY_ENC 8
 
 #define ENC_SETUP_INTERRUPT(interrupt_pin,interrupt_fun) attachPCINT(digitalPinToPCINT(interrupt_pin), interrupt_fun, CHANGE); 
-#define ENC_SETUP_IF_FOR_INTERRUPT(enc_number_test,pin_a,pin_b,fun_1,fun_2) if (Encoder::enc_number==enc_number_test) { ENC_SETUP_INTERRUPT(pin_a,fun_1); if (pin_b!=ENC_NONE) ENC_SETUP_INTERRUPT(pin_b,fun_2); }
+#define ENC_SETUP_IF_FOR_INTERRUPT(enc_number_test,pin_a,pin_b,fun_1,fun_2) if (Encoder::enc_number==enc_number_test) { \
+  ENC_SETUP_INTERRUPT(pin_a,fun_1); if (pin_b!=ENC_NONE) ENC_SETUP_INTERRUPT(pin_b,fun_2); }
 
 int enc_counter__NOT_USING = 0;
 bool enc_dat__NOT_USING[MAX_QUANTITY_ENC][5] = {0}; // [enc_number] [a_new,a_last,b_new,b_last,reverse_enc]
@@ -26,8 +27,6 @@ long int enc_count__NOT_USING[MAX_QUANTITY_ENC] = {0};
 
 class Encoder {
   public:
-    long int enc;
-    
     void setup(int pin_a, int pin_b=ENC_NONE) {
       Encoder::enc_number = enc_counter__NOT_USING;
       enc_counter__NOT_USING++;
@@ -49,35 +48,39 @@ class Encoder {
       ENC_SETUP_IF_FOR_INTERRUPT(6,pin_a,pin_b,Encoder::interrupt_enc_13,Encoder::interrupt_enc_14);
       ENC_SETUP_IF_FOR_INTERRUPT(7,pin_a,pin_b,Encoder::interrupt_enc_15,Encoder::interrupt_enc_16);
     }
+    
     void reverse() {
       enc_dat__NOT_USING[Encoder::enc_number][4] = !enc_dat__NOT_USING[Encoder::enc_number][4];
     }
+
+    long int get() {
+      return enc_count__NOT_USING[Encoder::enc_number];
+    }
+
+    void clear() {
+      enc_count__NOT_USING[Encoder::enc_number] = 0;
+    }
+    
   private:
     int enc_number;
-
-    /*static void Interrupt_enc_A() {
-      enc_motor::enc_dat_A_real = !enc_motor::enc_dat_A_real;
-      enc_motor::encoder_update();
-    }
-    static void Interrupt_enc_B() {
-      enc_motor::enc_dat_B_real = !enc_motor::enc_dat_B_real;
-      enc_motor::encoder_update();
-    }
-    static void enc_motor::encoder_update() {
-      if ((enc_motor::enc_dat_A_real!=enc_motor::enc_dat_B_last)!=enc_motor::reverse_enc_flag) enc_motor::enc++;
-      else enc_motor::enc--;
-      enc_motor::enc_dat_A_last = enc_motor::enc_dat_A_real;
-      enc_motor::enc_dat_B_last = enc_motor::enc_dat_B_real;
-    }*/
     
     static void interrupt_common(int interrupt_number) {
+      /* shematic:
+       * // update data
+       * enc_dat_(A/B)_real = !enc_dat_(A/B)_real;
+       * // operating
+       * if ((enc_dat_A_real!=enc_dat_B_last)!=reverse_enc_flag) enc++;
+       * else enc--;
+       * // save
+       * enc_dat_A_last = enc_dat_A_real;
+       * enc_dat_B_last = enc_dat_B_real;
+       */
       int enc_number = (interrupt_number-1)/2;
       enc_dat__NOT_USING[enc_number][0] = enc_dat__NOT_USING[enc_number][0]!=(interrupt_number%2);
       enc_dat__NOT_USING[enc_number][2] = enc_dat__NOT_USING[enc_number][2]==(interrupt_number%2);
       enc_count__NOT_USING[enc_number] += int((enc_dat__NOT_USING[enc_number][0]!=enc_dat__NOT_USING[enc_number][3])!=enc_dat__NOT_USING[enc_number][4])*2-1;
       enc_dat__NOT_USING[enc_number][1] = enc_dat__NOT_USING[enc_number][0];
       enc_dat__NOT_USING[enc_number][3] = enc_dat__NOT_USING[enc_number][2];
-      Serial.println(String(enc_number)+" "+String(enc_count__NOT_USING[enc_number]));
     }
     
     static void interrupt_enc_1()  { Encoder::interrupt_common(1);  }

@@ -60,9 +60,9 @@ THE SOFTWARE.
 
 // Settings and Board definitions are seperated to get an better overview.
 // The order and position of the inclusion is important!
-#include "PinChangeInterrupt/PinChangeInterruptSettings.h"
-#include "PinChangeInterrupt/PinChangeInterruptBoards.h"
-#include "PinChangeInterrupt/PinChangeInterruptPins.h"
+#include "PinChangeInterruptSettings.h"
+#include "PinChangeInterruptBoards.h"
+#include "PinChangeInterruptPins.h"
 
 #if !PCINT_NUM_USED_PORTS
 #error Please enable at least one PCINT port and pin!
