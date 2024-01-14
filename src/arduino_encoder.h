@@ -92,19 +92,27 @@ class Encoder {
     #ifdef ENC_SAVE_MODE
     static void interrupt_common(int interrupt_number) {
       int enc_number = (interrupt_number-1)/2; // [enc_number] [a_new,a_last,b_new,b_last,reverse_enc,one_pin_enc_flag]
-      // read
-      OPERATION_ENC[0] = digitalRead(enc_pin__NOT_USING[enc_number][0]);
-      OPERATION_ENC[2] = digitalRead(enc_pin__NOT_USING[enc_number][1]);
-      // forward
-      if      (!OPERATION_ENC[1] &&  OPERATION_ENC[0] && !OPERATION_ENC[3] && !OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
-      else if ( OPERATION_ENC[1] &&  OPERATION_ENC[0] && !OPERATION_ENC[3] &&  OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
-      else if ( OPERATION_ENC[1] && !OPERATION_ENC[0] &&  OPERATION_ENC[3] &&  OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
-      else if (!OPERATION_ENC[1] && !OPERATION_ENC[0] &&  OPERATION_ENC[3] && !OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
-      // backward
-      if      (!OPERATION_ENC[1] &&  OPERATION_ENC[0] && !OPERATION_ENC[3] && !OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] -= int(OPERATION_ENC[4])*2-1;
-      else if ( OPERATION_ENC[1] &&  OPERATION_ENC[0] && !OPERATION_ENC[3] &&  OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] -= int(OPERATION_ENC[4])*2-1;
-      else if ( OPERATION_ENC[1] && !OPERATION_ENC[0] &&  OPERATION_ENC[3] &&  OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] -= int(OPERATION_ENC[4])*2-1;
-      else if (!OPERATION_ENC[1] && !OPERATION_ENC[0] &&  OPERATION_ENC[3] && !OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] -= int(OPERATION_ENC[4])*2-1;
+      if (OPERATION_ENC[5]) {
+        // read
+        OPERATION_ENC[0] = digitalRead(enc_pin__NOT_USING[enc_number][0]);
+        // forward
+        if (OPERATION_ENC[0]!=OPERATION_ENC[1]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
+      }
+      else {
+        // read
+        OPERATION_ENC[0] = digitalRead(enc_pin__NOT_USING[enc_number][0]);
+        OPERATION_ENC[2] = digitalRead(enc_pin__NOT_USING[enc_number][1]);
+        // forward
+        if      (!OPERATION_ENC[1] &&  OPERATION_ENC[0] && !OPERATION_ENC[3] && !OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
+        else if ( OPERATION_ENC[1] &&  OPERATION_ENC[0] && !OPERATION_ENC[3] &&  OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
+        else if ( OPERATION_ENC[1] && !OPERATION_ENC[0] &&  OPERATION_ENC[3] &&  OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
+        else if (!OPERATION_ENC[1] && !OPERATION_ENC[0] &&  OPERATION_ENC[3] && !OPERATION_ENC[2]) enc_count__NOT_USING[enc_number] += int(OPERATION_ENC[4])*2-1;
+        // backward
+        if      (!OPERATION_ENC[3] &&  OPERATION_ENC[2] && !OPERATION_ENC[1] && !OPERATION_ENC[0]) enc_count__NOT_USING[enc_number] -= int(OPERATION_ENC[4])*2-1;
+        else if ( OPERATION_ENC[3] &&  OPERATION_ENC[2] && !OPERATION_ENC[1] &&  OPERATION_ENC[0]) enc_count__NOT_USING[enc_number] -= int(OPERATION_ENC[4])*2-1;
+        else if ( OPERATION_ENC[3] && !OPERATION_ENC[2] &&  OPERATION_ENC[1] &&  OPERATION_ENC[0]) enc_count__NOT_USING[enc_number] -= int(OPERATION_ENC[4])*2-1;
+        else if (!OPERATION_ENC[3] && !OPERATION_ENC[2] &&  OPERATION_ENC[1] && !OPERATION_ENC[0]) enc_count__NOT_USING[enc_number] -= int(OPERATION_ENC[4])*2-1;
+      }
       // save
       OPERATION_ENC[1] = OPERATION_ENC[0];
       OPERATION_ENC[3] = OPERATION_ENC[2];
