@@ -4,7 +4,7 @@
 
    author: Egor Bakay <egor_bakay@inbox.ru> Ni3nayka
    write:  october 2023
-   modify: november 2023
+   modify: january 2024
 
    link:
    arduino:
