@@ -26,8 +26,8 @@
 #define ENC_SETUP_INTERRUPT(interrupt_pin,interrupt_fun) attachPCINT(digitalPinToPCINT(interrupt_pin), interrupt_fun, CHANGE); 
 #elif (defined(ESP32)) 
 #define ENC_SETUP_INTERRUPT(interrupt_pin,interrupt_fun) attachInterrupt(digitalPinToInterrupt(interrupt_pin), interrupt_fun, CHANGE); 
-// #else
-// #error "lib not supported this board"
+#else
+#error "lib not supported this board"
 #endif
 
 #define ENC_SETUP_IF_FOR_INTERRUPT(enc_number_test,pin_a,pin_b,fun_1,fun_2) if (Encoder::enc_number==enc_number_test) { \
