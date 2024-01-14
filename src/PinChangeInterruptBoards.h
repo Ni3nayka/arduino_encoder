@@ -21,6 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#if(defined(__AVR_ATmega328P__)) 
+
 // include guard
 #pragma once
 
@@ -171,4 +173,6 @@ THE SOFTWARE.
 #define PCINT_INPUT_PORT3 0
 #else
 #define PCINT_INPUT_PORT3_USED
+#endif
+
 #endif

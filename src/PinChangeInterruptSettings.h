@@ -21,6 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#if(defined(__AVR_ATmega328P__)) 
+
 // include guard
 #pragma once
 
@@ -227,4 +229,6 @@ The order is also okay. */
 #if defined(PCINT_ENABLE_PORT1)
 #undef PCINT_ENABLE_PORT1
 #endif
+#endif
+
 #endif

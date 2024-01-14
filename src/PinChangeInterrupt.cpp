@@ -21,6 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#if(defined(__AVR_ATmega328P__)) 
+
 #include "PinChangeInterrupt.h"
 
 // manually include cpp files here to save flash if only 1 ISR is present
@@ -346,3 +348,5 @@ pop r1
 reti
 }
 */
+
+#endif
