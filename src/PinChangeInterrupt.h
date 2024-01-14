@@ -24,6 +24,8 @@ THE SOFTWARE.
 // Include Guard
 #pragma once
 
+#if(defined(__AVR_ATmega328P__)) 
+
 // Software Version
 #define PCINT_VERSION 129
 
@@ -896,3 +898,5 @@ uint8_t getPinChangeInterruptTrigger(const uint8_t pcintNum) {
 	else
 		return FALLING;
 }
+
+#endif

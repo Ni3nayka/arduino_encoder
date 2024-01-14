@@ -21,6 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#if(defined(__AVR_ATmega328P__)) 
+
 #include "PinChangeInterrupt.h"
 
 //================================================================================
@@ -147,3 +149,5 @@ void PinChangeInterruptEventPCINT23(void) {
 #endif // PCINT_USE_PORT2
 
 #endif // PCINT_INCLUDE_FROM_CPP
+
+#endif
