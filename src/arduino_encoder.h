@@ -7,19 +7,29 @@
    modify: november 2023
 
    link:
+   arduino:
    https://github.com/NicoHood/PinChangeInterrupt
    https://habr.com/ru/articles/527044/
    http://cppstudio.com/post/6964/
+   ESP32:
+   https://dzen.ru/a/X52dzrCeeXzrYfB6
+
 */
 
 #pragma once
 
-#include "PinChangeInterrupt.h"
-
 #define ENC_NONE -1
 #define MAX_QUANTITY_ENC 8
 
+#if(defined(__AVR_ATmega328P__)) 
+// #include "PinChangeInterrupt.h"
 #define ENC_SETUP_INTERRUPT(interrupt_pin,interrupt_fun) attachPCINT(digitalPinToPCINT(interrupt_pin), interrupt_fun, CHANGE); 
+#elif (defined(ESP32)) 
+#define ENC_SETUP_INTERRUPT(interrupt_pin,interrupt_fun) attachInterrupt(digitalPinToInterrupt(interrupt_pin), interrupt_fun, CHANGE); 
+// #else
+// #error "lib not supported this board"
+#endif
+
 #define ENC_SETUP_IF_FOR_INTERRUPT(enc_number_test,pin_a,pin_b,fun_1,fun_2) if (Encoder::enc_number==enc_number_test) { \
   ENC_SETUP_INTERRUPT(pin_a,fun_1); if (pin_b!=ENC_NONE) ENC_SETUP_INTERRUPT(pin_b,fun_2); }
 
@@ -33,7 +43,7 @@ class Encoder {
       Encoder::enc_number = enc_counter__NOT_USING;
       enc_counter__NOT_USING++;
     }
-    
+
     void setup(int pin_a, int pin_b=ENC_NONE) {
       pinMode(pin_a,INPUT);
       if (pin_b!=ENC_NONE) 
