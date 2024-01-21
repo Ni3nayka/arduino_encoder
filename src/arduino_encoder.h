@@ -22,7 +22,7 @@
 #define MAX_QUANTITY_ENC 8
 
 #if(defined(__AVR_ATmega328P__)) 
-// #include "PinChangeInterrupt.h"
+#include "PinChangeInterrupt.h"
 #define ENC_SETUP_INTERRUPT(interrupt_pin,interrupt_fun) attachPCINT(digitalPinToPCINT(interrupt_pin), interrupt_fun, CHANGE); 
 #elif (defined(ESP32)) 
 #define ENC_SETUP_INTERRUPT(interrupt_pin,interrupt_fun) attachInterrupt(digitalPinToInterrupt(interrupt_pin), interrupt_fun, CHANGE); 
