@@ -4,9 +4,14 @@
 
    author: Egor Bakay <egor_bakay@inbox.ru> Ni3nayka
    write:  november 2023
-   modify: november 2023
+   modify: january  2024
 */
 
+
+// #define ENC_SAVE_MODE // если при работе энкодеров возникают проблемы
+                         // (как правило из-за сторонних библиотек)
+                         // расскоментируйте эту строку (с ENC_SAVE_MODE)
+                         
 #include <arduino_encoder.h>  // Подключаем библиотеку
 
 // Создаем объекты для работы с:
