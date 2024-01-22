@@ -3,7 +3,9 @@
 
 # установка:
 Скачайте архив с библиотекой и поместите в следующий каталог:
+
 windows: ../documents/Arduino/libraries
+
 linux: ~/Arduino/libraries
 
 # поддерживаемые платы:
