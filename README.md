@@ -1,16 +1,19 @@
 # arduino_encoder
-Library for connecting the encoder to any arduino pins
+Библиотека для подключения энкодеров к ардуино
 
-# install:
-open archive to this path:
+# установка:
+Скачайте архив с библиотекой и поместите в следующий каталог:
 windows: ../documents/Arduino/libraries
-linux: home/(user)/Arduino/libraries
+linux: ~/Arduino/libraries
 
-# board:
-ESP32, arduino uno, arduino nano, and more.
+# поддерживаемые платы:
+ESP32, avr arduino (uno, nano, and more).
 
-# using:
-read example folder or (in Arduino IDE) file/examples/arduino_encoder/..
+# использование:
+Читайте пример в папке example или (в Arduino IDE) откройте файл/примеры/arduino_encoder/basic
 
-### Link:
+# ENC_SAVE_MODE:
+В библиотеке v1.2+ есть специальный режим ENC_SAVE_MODE. Он нуже в случае, когда при подключении дополнительных ресурсоемких библиотек происходит подтормаживание контроллера, и специально оптимизированные алгоритмы "по умолчанию" не успевают обрабатывать информацию, которая приходит с опозданием. Специально для этого был создан режим с дополнительными перепроверками ENC_SAVE_MODE (см. пример basic).
+
+### ссылки:
 https://github.com/NicoHood/PinChangeInterrupt
