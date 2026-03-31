@@ -24,7 +24,7 @@ THE SOFTWARE.
 // Include Guard
 #pragma once
 
-#if(defined(__AVR_ATmega328P__)) 
+#if(defined(__AVR__))
 
 // Software Version
 #define PCINT_VERSION 129

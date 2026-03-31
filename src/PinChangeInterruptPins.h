@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#if(defined(__AVR_ATmega328P__)) 
+#if(defined(__AVR__)) 
 
 // include guard
 #pragma once
